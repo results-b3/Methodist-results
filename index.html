@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>College Result Portal</title>
+    <style>
+        body {
+            font-family: Arial;
+            text-align: center;
+            background-color: #f5f5f5;
+        }
+
+        .container {
+            background: white;
+            width: 80%;
+            margin: auto;
+            padding: 20px;
+            box-shadow: 0px 0px 10px gray;
+        }
+
+        h2 {
+            color: blue;
+        }
+
+        .top-section {
+            margin-bottom: 15px;
+        }
+
+        input {
+            padding: 8px;
+            width: 200px;
+        }
+
+        button {
+            padding: 8px 15px;
+            background-color: blue;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        img {
+            width: 80px;
+            height: 80px;
+            margin-left: 10px;
+            display: none;
+            border-radius: 5px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th {
+            background-color: #e57373;
+            color: white;
+            padding: 10px;
+        }
+
+        td {
+            border: 1px solid gray;
+            padding: 8px;
+        }
+
+        .final-result {
+            margin-top: 20px;
+            font-size: 20px;
+            color: green;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h2>Results</h2>
+<h3>BE III SEMESTER (M24) REGULAR EXAMINATIONS</h3>
+
+<div class="top-section">
+    <input type="text" id="roll" placeholder="Enter Roll Number">
+    <button onclick="getResult()">🔍</button>
+    <br><br>
+    <img id="photo" src="">
+</div>
+
+<h3 id="name"></h3>
+
+<table id="resultTable" style="display:none;">
+    <thead>
+        <tr>
+            <th>Sno</th>
+            <th>SubCode</th>
+            <th>Subject Name</th>
+            <th>Grade</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+    <tbody id="tableBody"></tbody>
+</table>
+
+<div class="final-result" id="finalResult"></div>
+
+</div>
+
+<script>
+
+const database = {
+    "160724735013": {
+        name: "RAGU SANJAY VENKAT",
+        photo: "photo.jpg/photo.jpg",   // ✅ your image name
+        cgpa: "6.5",
+        subjects: [
+            ["M24PC301EC","AUTOMATIC CONTROL SYSTEMS","B","PASS"],
+            ["M24PC302EC","SIGNALS AND SYSTEMS","E","PASS"],
+            ["M24PC303EC","SMART SENSORS AND IOT","E","PASS"],
+            ["M24PC304EC","DIGITAL LOGIC DESIGN USING HDL","E","PASS"],
+            ["M24PC305EC","COMPUTER ORGANIZATION","D","PASS"],
+            ["M24ES310EC","PYTHON & AI","C","PASS"],
+            ["M24ES311EC","PROBABILITY THEORY","E","PASS"],
+            ["M24PC351EC","CONTROL SYSTEM LAB","D","PASS"],
+            ["M24PC352EC","IOT LAB","C","PASS"],
+            ["M24ES359EC","AI LAB","C","PASS"]
+        ]
+    }
+};
+
+function getResult() {
+    let roll = document.getElementById("roll").value;
+    let student = database[roll];
+
+    if(student) {
+
+        // Name
+        document.getElementById("name").innerHTML = "Name: " + student.name;
+
+        // Photo
+        let photo = document.getElementById("photo");
+        photo.src = student.photo;
+        photo.style.display = "inline";
+
+        // Table
+        let body = document.getElementById("tableBody");
+        body.innerHTML = "";
+
+        student.subjects.forEach((sub, index) => {
+            let row = `<tr>
+                <td>${index+1}</td>
+                <td>${sub[0]}</td>
+                <td>${sub[1]}</td>
+                <td>${sub[2]}</td>
+                <td>${sub[3]}</td>
+            </tr>`;
+            body.innerHTML += row;
+        });
+
+        document.getElementById("resultTable").style.display = "table";
+
+        // Final Result
+        document.getElementById("finalResult").innerHTML =
+            "RESULT: CGPA = " + student.cgpa;
+
+    } else {
+        document.getElementById("name").innerHTML = "No Record Found!";
+        document.getElementById("resultTable").style.display = "none";
+        document.getElementById("photo").style.display = "none";
+        document.getElementById("finalResult").innerHTML = "";
+    }
+}
+
+</script>
+
+</body>
+</html>
